@@ -1,19 +1,31 @@
 import { createSystem, createVirtualTypeScriptEnvironment } from "@typescript/vfs";
 import ts, { CompilerOptions, JsxEmit, ModuleKind, ModuleResolutionKind, ScriptTarget } from "typescript";
-import { paramTooltip, tsAutocompletion, tsLinting, typescript, typescriptBaseTheme, typescriptHoverTooltip } from "../../../../src";
+import {
+	paramTooltip,
+	tsAutocompletion,
+	tsLinting,
+	typescript,
+	typescriptBaseTheme,
+	typescriptHoverTooltip,
+} from "../../../../src";
 import { basicSetup, EditorView } from "codemirror";
 
 import { vsCodeDarkPlusTheme, vsCodeDarkPlusHighlightStyle } from "./vs-code-dark-plus";
 import { codeFolding, syntaxHighlighting } from "@codemirror/language";
 
-const types = import.meta.glob("../../../../node_modules/typescript/lib/*.d.ts", {
+const types: Record<string, string> = import.meta.glob("../../../../node_modules/typescript/lib/*.d.ts", {
 	eager: true,
-	as: "raw",
+	query: "?raw",
+	import: "default",
 });
-const solidTypes = import.meta.glob("../../../../node_modules/{solid-js,csstype}/**/*.{d.ts,json}", {
-	eager: true,
-	as: "raw",
-});
+const solidTypes: Record<string, string> = import.meta.glob(
+	"../../../../node_modules/{solid-js,csstype}/**/*.{d.ts,json}",
+	{
+		eager: true,
+		query: "?raw",
+		import: "default",
+	},
+);
 
 const compilerOptions: CompilerOptions = {
 	strict: true,
